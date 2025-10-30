@@ -1,11 +1,11 @@
+# myapp/views/recipe_views.py
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
-from . import models
-from .forms import RecipeForm
+from .. import models
+from ..forms import RecipeForm
 from django.core.exceptions import ObjectDoesNotExist
 import json
 
-# Create your views here.
 
 # 🔹 Mostrar todas las recetas (JSON)
 def index(request):
@@ -13,6 +13,7 @@ def index(request):
     return JsonResponse(
         list(all_recipes), safe=False, json_dumps_params={"ensure_ascii": False}
     )
+
 
 # 🔹 Mostrar una receta por ID (JSON)
 def get_one_recipe(request, recipe_id):
