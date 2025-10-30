@@ -4,6 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from .. import models
 from ..forms import RecipeForm
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
 import json
 
 
@@ -34,13 +35,16 @@ def get_one_recipe(request, recipe_id):
         return JsonResponse({"error": "Recipe not found"}, status=404)
 
 
-# 🔹 Crear receta (formulario HTML y POST)
+# 🔹 Crear receta
 def create_recipe(request):
     if request.method == "POST":
         form = RecipeForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("recipes:index")
+            messages.success(request, "Receta creada exitosamente 🍳")
+            return redirect("recipes:list_recipes")
+        else:
+            messages.error(request, "Error al crear la receta. Verifica los datos.")
     else:
         form = RecipeForm()
     return render(request, "recipes/create_recipe.html", {"form": form})
@@ -53,7 +57,10 @@ def edit_recipe(request, recipe_id):
         form = RecipeForm(request.POST, instance=recipe)
         if form.is_valid():
             form.save()
-            return redirect("recipes:index")
+            messages.success(request, "Receta actualizada correctamente ✏️")
+            return redirect("recipes:list_recipes")
+        else:
+            messages.error(request, "Error al actualizar la receta.")
     else:
         form = RecipeForm(instance=recipe)
     return render(request, "recipes/edit_recipe.html", {"form": form})
@@ -64,5 +71,12 @@ def delete_recipe(request, recipe_id):
     recipe = models.Recipes.objects.get(id=recipe_id)
     if request.method == "POST":
         recipe.delete()
-        return redirect("recipes:index")
+        messages.success(request, "Receta eliminada correctamente 🗑️")
+        return redirect("recipes:list_recipes")
     return render(request, "recipes/delete_recipe.html", {"recipe": recipe})
+
+
+# 🔹 Listar recetas (HTML)
+def list_recipes(request):
+    recipes = models.Recipes.objects.all()
+    return render(request, "recipes/list_recipes.html", {"recipes": recipes})

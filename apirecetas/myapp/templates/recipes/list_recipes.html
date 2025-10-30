@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Listado de recetas{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Todas las recetas</h2>
+
+{% if recipes %}
+<div class="row">
+    {% for recipe in recipes %}
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{ recipe.name }}</h5>
+                <p class="card-text"><strong>Ingredientes:</strong> {{ recipe.ingredients|truncatechars:100 }}</p>
+                <p class="card-text"><small>👥 {{ recipe.people }} personas</small></p>
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'recipes:edit_recipe' recipe.id %}" class="btn btn-primary btn-sm">Editar</a>
+                    <a href="{% url 'recipes:delete_recipe' recipe.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">No hay recetas registradas aún 🍽️</div>
+{% endif %}
+{% endblock %}

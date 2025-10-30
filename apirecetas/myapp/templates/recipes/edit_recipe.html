@@ -1,6 +1,13 @@
-<h1>Editar Receta</h1>
-<form method="POST">
+{% extends 'base.html' %}
+
+{% block title %}Editar receta{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Editar receta</h2>
+<form method="POST" class="card p-4 shadow-sm bg-white">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Actualizar</button>
+    <button type="submit" class="btn btn-primary">Actualizar</button>
+    <a href="{% url 'recipes:list_recipes' %}" class="btn btn-secondary">Cancelar</a>
 </form>
+{% endblock %}
