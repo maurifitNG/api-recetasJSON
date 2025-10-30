@@ -1,0 +1,6 @@
+<h1>Eliminar Receta: {{ recipe.name }}</h1>
+<form method="POST">
+    {% csrf_token %}
+    <p>¿Seguro que quieres eliminar esta receta?</p>
+    <button type="submit">Sí, eliminar</button>
+</form>
